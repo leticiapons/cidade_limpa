@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cidade Limpa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><nav>
+<a href="#home">Home</a><a href="#sobre">Sobre</a><a href="#formulario">Formulário</a><a href="#agente">Área do Agente Fiscal</a>
+</nav></header>
+<main>
+<section id="home" class="full"><div class="wrap">
+<h1>CIDADE LIMPA</h1>
+<img src="img/hero.jpg" alt="Mãos segurando materiais recicláveis ao redor do símbolo de reciclagem">
+</div></section>
+
+<section id="sobre" class="full"><div class="wrap two">
+<img class="art" src="img/lixeira.jpg" alt="Lixeira verde sorridente com restos de alimentos">
+<div>
+<h2>Sobre</h2>
+<p>O acúmulo irregular de lixo em lugares inadequados pode gerar enchentes, doenças (como a dengue), contaminações e poluição visual.</p>
+<p>Caso você tenha encontrado lixo descartado irregularmente em algum ponto da cidade, comunique isto através de um breve formulário.</p>
+<p>São através destas informações centralizadas que o município poderá identificar onde a limpeza deve ser priorizada.</p>
+<div class="ctr"><a class="btn" href="#formulario">Abrir formulário</a></div>
+</div>
+</div></section>
+
+<section id="formulario"><div class="wrap fw">
+<form id="frm" class="card" novalidate>
+<h2 style="text-align:left;margin-bottom:32px">Formulário - Descarte Irregular do Lixo</h2>
+<fieldset><legend>Selecione o tipo de lixo descartado:</legend>
+<div class="opts">
+<label><input type="radio" name="tipo" value="Lixo reciclável">Lixo reciclável (papel, plástico, vidro, metal)</label>
+<label><input type="radio" name="tipo" value="Lixo orgânico">Lixo orgânico (restos de alimentos, guardanapos descartáveis, galhos, etc)</label>
+<label><input type="radio" name="tipo" value="Móveis e eletrodomésticos">Móveis e eletrodomésticos</label>
+<label><input type="radio" name="tipo" value="Resíduos perigosos ou químicos">Resíduos perigosos ou químicos</label>
+<label><input type="radio" name="tipo" value="Resíduos hospitalares">Resíduos hospitalares</label>
+<label><input type="radio" name="tipo" value="Outros/diversos">Outros/diversos</label>
+</div></fieldset>
+<div class="row r1">
+<div class="f"><label for="rua">Rua:</label><input type="text" id="rua" autocomplete="street-address"></div>
+<div class="f"><label for="num">Nº:</label><input type="text" id="num" maxlength="10" style="max-width:110px"><small>Se inexistente, escreva SN</small></div>
+<div class="f"><label for="bai">Bairro:</label><input type="text" id="bai"></div>
+</div>
+<div class="row r2">
+<div class="f"><label for="cid">Cidade:</label><input type="text" id="cid" style="max-width:300px"></div>
+<div class="f"><label for="uf">UF:</label><input type="text" id="uf" maxlength="2" style="text-transform:uppercase;max-width:72px"></div>
+<div class="f"><label for="cep">CEP:</label><input type="text" id="cep" maxlength="8" inputmode="numeric" style="max-width:150px"><small>Sem pontos e traços</small></div>
+</div>
+<div class="f" style="margin-bottom:32px"><label for="foto">Foto do lixo descartado:</label><input type="file" id="foto" accept=".jpeg,.jpg,.pdf,image/jpeg,application/pdf"><small>Anexar foto (extensões permitidas: jpeg, jpg, pdf)</small></div>
+<div class="ck"><label><input type="checkbox" id="decl">Declaro que as informações preenchidas são verdadeiras.</label><button class="btn" type="submit">Enviar</button></div>
+<p class="err" id="ferr" role="alert"></p>
+</form>
+</div></section>
+
+<section id="agente" class="full"><div class="wrap">
+<div id="loginBox" class="two">
+<img class="art" src="img/icone-usuario.jpg" alt="Ícone de usuário" style="max-width:220px;margin:0 auto">
+<form class="login" id="lgn" novalidate>
+<h2>Área do Agente Fiscal</h2>
+<div class="f"><label for="mat">Matrícula:</label><small>Sem pontos e traços</small><input type="text" id="mat" inputmode="numeric" autocomplete="username"></div>
+<div class="f"><label for="pwd">Senha:</label><input type="password" id="pwd" autocomplete="current-password"></div>
+<button class="btn" type="submit">Entrar</button>
+<p class="err" id="lerr" role="alert"></p>
+</form>
+</div>
+<div id="painel" class="hide">
+<div class="bar"><h2 style="margin:0;font-size:clamp(22px,3vw,36px)">Monitoramento do descarte irregular do lixo</h2><button class="btn" id="sair" type="button">Sair</button></div>
+<div class="tw"><table>
+<thead><tr><th>ID</th><th>Data Envio</th><th>Status</th><th>Tipo de Lixo</th><th>Rua</th><th>Nº</th><th>Bairro</th><th>Cidade/UF</th><th>CEP</th><th>Imagem</th></tr>
+<tr class="flt"><th><input type="text" data-c="0" placeholder="Filtrar" aria-label="Filtrar ID"></th><th><input type="text" data-c="1" placeholder="Filtrar" aria-label="Filtrar data"></th><th><select data-c="2" aria-label="Filtrar status"><option value="">Todos</option><option>Recebido</option><option>Em Andamento</option><option>Concluído</option></select></th><th><input type="text" data-c="3" placeholder="Filtrar" aria-label="Filtrar tipo de lixo"></th><th><input type="text" data-c="4" placeholder="Filtrar" aria-label="Filtrar rua"></th><th><input type="text" data-c="5" placeholder="Filtrar" aria-label="Filtrar número"></th><th><input type="text" data-c="6" placeholder="Filtrar" aria-label="Filtrar bairro"></th><th><input type="text" data-c="7" placeholder="Filtrar" aria-label="Filtrar cidade e UF"></th><th><input type="text" data-c="8" placeholder="Filtrar" aria-label="Filtrar CEP"></th><th></th></tr></thead>
+<tbody id="tb"></tbody></table></div>
+</div>
+</div></section>
+</main>
+<footer>Cidade Limpa · Registro de descarte irregular de lixo</footer>
+
+<div id="ok" class="hide" role="dialog" aria-modal="true"><div>
+<h2>Formulário enviado com sucesso. Obrigado!</h2>
+<img src="img/caixa-reciclagem.jpg" alt="Caixa verde de reciclagem com materiais">
+<button class="btn" id="fecha" type="button">Fechar</button>
+</div></div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
