@@ -98,5 +98,64 @@ $("sair").addEventListener("click",function(){api("/api/logout",{method:"POST"})
 $("tb").addEventListener("change",function(e){
   var s=e.target;if(s.tagName==="SELECT"&&s.dataset.id)setStatus(s.dataset.id,s.value).catch(function(){});
 });
+// ---------- CEP automático (ViaCEP): CEP -> endereço e endereço -> CEP ----------
+(function(){
+  var VIA="https://viacep.com.br/ws/",reqN=0,cepAuto=false,tmr=null;
+  var msg=$("cepmsg"),sel=$("cepsel");
+  function aviso(t){msg.textContent=t||""}
+  function limpaLista(){sel.classList.add("hide");sel.innerHTML=""}
+  function get(u){return fetch(u).then(function(r){if(!r.ok)throw new Error("http");return r.json()})}
+  function setCep(c){$("cep").value=String(c).replace(/\D/g,"").slice(0,8);cepAuto=true}
+
+  // CEP -> endereço (o número fica em branco para a pessoa preencher)
+  function porCep(){
+    var c=$("cep").value;
+    limpaLista();
+    if(c.length!==8){aviso("");return}
+    var n=++reqN;aviso("Buscando endereço...");
+    get(VIA+c+"/json/").then(function(d){
+      if(n!==reqN)return;
+      if(d.erro){aviso("CEP não encontrado. Confira os números ou preencha o endereço.");return}
+      if(d.logradouro)$("rua").value=d.logradouro;
+      if(d.bairro)$("bai").value=d.bairro;
+      if(d.localidade)$("cid").value=d.localidade;
+      if(d.uf)$("uf").value=d.uf;
+      if(!d.logradouro){aviso("Este CEP não informa a rua. Preencha rua e bairro.");$("rua").focus();return}
+      aviso("Endereço preenchido. Informe o número.");
+      if(!$("num").value.trim())$("num").focus();
+    }).catch(function(){if(n===reqN)aviso("Não foi possível consultar o CEP agora. Preencha o endereço manualmente.")});
+  }
+
+  // endereço (UF + cidade + rua) -> CEP
+  function porEndereco(){
+    var uf=$("uf").value.trim(),cid=$("cid").value.trim(),rua=$("rua").value.trim();
+    if($("cep").value&&!cepAuto)return;            // CEP digitado pela pessoa não é sobrescrito
+    if(!/^[A-Za-z]{2}$/.test(uf)||cid.length<3||rua.length<3)return;
+    var n=++reqN;aviso("Buscando CEP...");limpaLista();
+    get(VIA+uf.toUpperCase()+"/"+encodeURIComponent(cid)+"/"+encodeURIComponent(rua)+"/json/").then(function(l){
+      if(n!==reqN)return;
+      if(!Array.isArray(l)||!l.length){aviso("Nenhum CEP encontrado para este endereço. Digite o CEP.");return}
+      if(l.length===1){setCep(l[0].cep);aviso("CEP preenchido automaticamente.");return}
+      sel.innerHTML='<option value="">Escolha o CEP da sua rua</option>'+l.map(function(x){
+        var c=String(x.cep).replace(/\D/g,"");
+        return'<option value="'+c+'">'+c+" - "+esc(x.logradouro)+(x.bairro?" - "+esc(x.bairro):"")+'</option>';
+      }).join("");
+      sel.classList.remove("hide");
+      aviso("Encontramos mais de um CEP. Escolha o seu:");
+    }).catch(function(){if(n===reqN)aviso("Não foi possível consultar o CEP agora. Digite o CEP.")});
+  }
+
+  function agenda(){clearTimeout(tmr);tmr=setTimeout(porEndereco,800)}
+  ["rua","cid","uf"].forEach(function(id){$(id).addEventListener("input",agenda)});
+  $("cep").addEventListener("input",function(){cepAuto=false;clearTimeout(tmr);if(this.value.length===8)porCep();else{limpaLista();aviso("")}});
+  sel.addEventListener("change",function(){
+    if(!sel.value)return;
+    setCep(sel.value);
+    var o=sel.options[sel.selectedIndex].text.split(" - ");
+    if(o[2]&&!$("bai").value.trim())$("bai").value=o[2];
+    limpaLista();aviso("CEP preenchido automaticamente.");
+  });
+  $("frm").addEventListener("reset",function(){clearTimeout(tmr);reqN++;cepAuto=false;limpaLista();aviso("")});
+})();
 api("/api/me").then(abrir).catch(function(){});
 })();
