@@ -50,7 +50,7 @@
 <div class="row r2">
 <div class="f"><label for="cid">Cidade:</label><input type="text" id="cid" style="max-width:300px"></div>
 <div class="f"><label for="uf">UF:</label><input type="text" id="uf" maxlength="2" style="text-transform:uppercase;max-width:72px"></div>
-<div class="f"><label for="cep">CEP:</label><input type="text" id="cep" maxlength="8" inputmode="numeric" style="max-width:150px"><small>Sem pontos e traços</small></div>
+<div class="f"><label for="cep">CEP:</label><input type="text" id="cep" maxlength="8" inputmode="numeric" style="max-width:150px"><small>Sem pontos e traços</small><div id="cepmsg" class="cepmsg" aria-live="polite"></div><select id="cepsel" class="hide" aria-label="Escolha o CEP"></select></div>
 </div>
 <div class="f" style="margin-bottom:32px"><label for="foto">Foto do lixo descartado:</label><input type="file" id="foto" accept=".jpeg,.jpg,.pdf,image/jpeg,application/pdf"><small>Anexar foto (extensões permitidas: jpeg, jpg, pdf)</small></div>
 <div class="ck"><label><input type="checkbox" id="decl">Declaro que as informações preenchidas são verdadeiras.</label><button class="btn" type="submit">Enviar</button></div>
